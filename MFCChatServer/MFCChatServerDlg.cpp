@@ -183,5 +183,5 @@ void CMFCChatServerDlg::OnBnClickedStartBtn()
 	LPCSTR szPort = (LPCSTR)T2A(strPort);
 	
 	TRACE("szPort=%s", szPort);
-	TRACE("###OnBnClickedStartBtn");
+	TRACE("###3000OnBnClickedStartBtn");
 }
