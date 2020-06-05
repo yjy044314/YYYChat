@@ -7,6 +7,7 @@
 #include "MFCChatServer.h"
 #include "MFCChatServerDlg.h"
 #include "afxdialogex.h"
+#include "CServerSocket.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -59,6 +60,7 @@ CMFCChatServerDlg::CMFCChatServerDlg(CWnd* pParent /*=nullptr*/)
 void CMFCChatServerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_MSG_LIST, m_list);
 }
 
 BEGIN_MESSAGE_MAP(CMFCChatServerDlg, CDialogEx)
@@ -103,7 +105,7 @@ BOOL CMFCChatServerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-
+	GetDlgItem(IDC_PORT_EDIT)->SetWindowText(_T("6000"));
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -183,5 +185,11 @@ void CMFCChatServerDlg::OnBnClickedStartBtn()
 	LPCSTR szPort = (LPCSTR)T2A(strPort);
 	
 	TRACE("szPort=%s", szPort);
-	
+	int iPort = _ttoi(strPort);
+	//创建对象
+	m_server = new CServerSocket;
+	//创建socket
+	m_server->Create(iPort);
+	//监听
+	m_server->Listen();
 }

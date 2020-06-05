@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "CServerSocket.h"
 
 
 // CMFCChatServerDlg 对话框
@@ -35,4 +36,6 @@ public:
 	
 	afx_msg void OnEnChangeSendEdit();
 	afx_msg void OnBnClickedStartBtn();
+	CListBox m_list;
+	CServerSocket *m_server;
 };

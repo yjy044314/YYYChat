@@ -7,7 +7,7 @@
 #include "MFCChatClient.h"
 #include "MFCChatClientDlg.h"
 #include "afxdialogex.h"
-//#include <atlbase.h>
+#include <atlbase.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -60,6 +60,8 @@ CMFCChatClientDlg::CMFCChatClientDlg(CWnd* pParent /*=nullptr*/)
 void CMFCChatClientDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_LIST1, m_list);
+	DDX_Control(pDX, IDC_SEND_EDIT, m_input);
 }
 
 BEGIN_MESSAGE_MAP(CMFCChatClientDlg, CDialogEx)
@@ -103,7 +105,9 @@ BOOL CMFCChatClientDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-
+	GetDlgItem(IDC_PORT_EDIT)->SetWindowText(_T("6000"));
+	GetDlgItem(IDC_IPADDRESS)->SetWindowText(_T("127.0.0.1"));
+	
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -160,6 +164,7 @@ HCURSOR CMFCChatClientDlg::OnQueryDragIcon()
 
 void CMFCChatClientDlg::OnBnClickedConnectBtn()
 {
+	//取得IP跟端口
 	TRACE("####OnBnClickedConnectBtn");
 	CString strPort, strIP;
 	//从控件中获取内容
@@ -169,8 +174,16 @@ void CMFCChatClientDlg::OnBnClickedConnectBtn()
 	USES_CONVERSION;
 	LPCSTR szPort = (LPCSTR)T2A(strPort);
 	LPCSTR szIP =(LPCSTR)T2A(strIP);
-
 	TRACE("szPort=%s,szIP=%s", szPort, szIP);
+
+
+	int iPort = _ttoi(strPort);
+	//创建对象
+	m_client = new CMySocket;
+	// 创建套接字
+	m_client->Create();
+	//连接
+	m_client->Connect(strIP, iPort);
 	//ALT+G
 	//alt+shift+F
 
