@@ -8,6 +8,7 @@
 #include "MFCChatClientDlg.h"
 #include "afxdialogex.h"
 #include <atlbase.h>
+#include "CMySocket.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
