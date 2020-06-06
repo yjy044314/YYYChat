@@ -4,6 +4,7 @@
 
 #pragma once
 class CServerSocket;
+class CChatSocket;
 
 
 // CMFCChatServerDlg 对话框
@@ -37,5 +38,8 @@ public:
 	afx_msg void OnEnChangeSendEdit();
 	afx_msg void OnBnClickedStartBtn();
 	CListBox m_list;
+	CChatSocket* m_chat;
 	CServerSocket* m_server;
+	CTime m_tm;
+
 };

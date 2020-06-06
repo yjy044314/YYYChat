@@ -181,8 +181,17 @@ void CMFCChatClientDlg::OnBnClickedConnectBtn()
 	int iPort = _ttoi(strPort);
 	//创建对象
 	m_client = new CMySocket;
+	
 	// 创建套接字
-	m_client->Create();
+	if (!m_client->Create()) 
+	{
+		TRACE("m_client Create error %d",GetLastError());
+		return;
+	}
+	else 
+	{
+		TRACE("m_client Create Success");
+	}
 	//连接
 	m_client->Connect(strIP, iPort);
 	//ALT+G

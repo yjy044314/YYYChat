@@ -189,7 +189,25 @@ void CMFCChatServerDlg::OnBnClickedStartBtn()
 	//创建对象
 	m_server = new CServerSocket;
 	//创建socket
-	m_server->Create(iPort);
+	if (!m_server->Create(iPort)) 
+	{
+		TRACE("m_server Create errorCode=%d",GetLastError());
+		return;
+	}
+	else 
+	{
+		TRACE("m_server Create Sucess");
+	}
 	//监听
-	m_server->Listen();
+	if (!m_server->Listen()) 
+	{
+		TRACE("m_server Listen errorCode=%d", GetLastError());
+		return;
+	}
+
+	CString str;
+	str=m_tm.Format("%X ");
+	str += _T("建立服务");
+	m_list.AddString(str);
+	UpdateData(FALSE);
 }

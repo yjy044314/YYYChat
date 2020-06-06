@@ -7,9 +7,8 @@ class CServerSocket :
 	public CAsyncSocket
 {
 public:
-
 	CServerSocket();
 	virtual ~CServerSocket();
-	virtual void OnConnect(int nErrorCode);
+	virtual void OnAccept(int nErrorCode);
 };
 
