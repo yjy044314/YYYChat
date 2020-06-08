@@ -18,6 +18,7 @@ void CServerSocket::OnAccept(int nErrorCode)
 	TRACE("####OnAccept(int nErrorCode)");
 	CMFCChatServerDlg* dlg =(CMFCChatServerDlg*) AfxGetApp()->GetMainWnd();
 	dlg->m_chat = new CChatSocket;
+	//开始接收连接
 	Accept(*(dlg->m_chat));
 
 	CString str;

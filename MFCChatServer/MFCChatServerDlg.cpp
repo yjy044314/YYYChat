@@ -8,6 +8,7 @@
 #include "MFCChatServerDlg.h"
 #include "afxdialogex.h"
 #include "CServerSocket.h"
+#include "CChatSocket.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -70,6 +71,7 @@ BEGIN_MESSAGE_MAP(CMFCChatServerDlg, CDialogEx)
 	
 	ON_EN_CHANGE(IDC_SEND_EDIT, &CMFCChatServerDlg::OnEnChangeSendEdit)
 	ON_BN_CLICKED(IDC_START_BTN, &CMFCChatServerDlg::OnBnClickedStartBtn)
+	ON_BN_CLICKED(IDC_SEND_BTN, &CMFCChatServerDlg::OnBnClickedSendBtn)
 END_MESSAGE_MAP()
 
 
@@ -210,4 +212,29 @@ void CMFCChatServerDlg::OnBnClickedStartBtn()
 	str += _T("建立服务");
 	m_list.AddString(str);
 	UpdateData(FALSE);
+}
+
+
+void CMFCChatServerDlg::OnBnClickedSendBtn()
+{
+	//1.获取编辑框内容
+	CString strTmpMsg;
+	GetDlgItem(IDC_SEND_EDIT)->GetWindowTextW(strTmpMsg);
+
+	USES_CONVERSION;
+	char* szSendBuf = T2A(strTmpMsg);
+	//2.发送到服务端
+	m_chat->Send(szSendBuf, 200, 0);
+
+	//3.显示到列表框
+	CString strShow = _T("服务端: ");
+	CString strTime;
+	m_tm = CTime::GetCurrentTime();
+	strTime = m_tm.Format("%X ");
+	strShow = strTime + strShow;
+	strShow += strTmpMsg;
+	m_list.AddString(strShow);
+	UpdateData(FALSE);
+	//清空编辑框
+	GetDlgItem(IDC_SEND_EDIT)->SetWindowTextW(_T(""));
 }

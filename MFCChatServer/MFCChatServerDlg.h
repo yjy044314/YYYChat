@@ -42,4 +42,5 @@ public:
 	CServerSocket* m_server;
 	CTime m_tm;
 
+	afx_msg void OnBnClickedSendBtn();
 };
