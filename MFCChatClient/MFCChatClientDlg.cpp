@@ -210,6 +210,20 @@ void CMFCChatClientDlg::OnBnClickedDisconnectBtn()
 	// TODO: 在此添加控件通知处理程序代码
 }
 
+//消息的拼接
+CString CMFCChatClientDlg::CatShowString(CString strInfo, CString strMsg)
+{
+	//时间+信息（昵称）+消息
+	CString strTime;
+	CTime tmNow;
+	tmNow = CTime::GetCurrentTime();
+	strTime = tmNow.Format("%X ");
+	CString strShow;
+	strShow = strTime + strShow;
+	strShow += strInfo;
+	strShow += strMsg;
+	return strShow;
+}
 
 void CMFCChatClientDlg::OnBnClickedSendBtn()
 {
@@ -223,12 +237,15 @@ void CMFCChatClientDlg::OnBnClickedSendBtn()
 	m_client->Send(szSendBuf, 200, 0);
 
 	//3.显示到列表框
-	CString strShow = _T("我: ");
-	CString strTime;
-	m_tm = CTime::GetCurrentTime();
-	strTime = m_tm.Format("%X ");
-	strShow = strTime + strShow;
-	strShow += strTmpMsg;
+	CString strShow;
+	CString strInfo= _T("我: ");
+	strShow = CatShowString(strInfo, strTmpMsg);
+
+// 	CString strTime;
+// 	m_tm = CTime::GetCurrentTime();
+// 	strTime = m_tm.Format("%X ");
+// 	strShow = strTime + strShow;
+// 	strShow += strTmpMsg;
 	m_list.AddString(strShow);
 	UpdateData(FALSE);
 	//清空编辑框

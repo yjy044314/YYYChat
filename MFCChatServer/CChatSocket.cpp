@@ -25,11 +25,12 @@ void CChatSocket::OnReceive(int nErrorCode)
 	USES_CONVERSION;
 	CString strRecvMsg = A2W(szRecvBuf);
 	CString strShow = _T("¿Í»§¶Ë: ");
-	CString strTime;
-	dlg->m_tm = CTime::GetCurrentTime();
-	strTime = dlg->m_tm.Format("%X ");
-	strShow = strTime + strShow;
-	strShow += strRecvMsg;
+	strShow = dlg->CatShowString(strShow, strRecvMsg);
+// 	CString strTime;
+// 	dlg->m_tm = CTime::GetCurrentTime();
+// 	strTime = dlg->m_tm.Format("%X ");
+// 	strShow = strTime + strShow;
+// 	strShow += strRecvMsg;
 	dlg->m_list.AddString(strShow);
 	dlg->UpdateData(FALSE);
 

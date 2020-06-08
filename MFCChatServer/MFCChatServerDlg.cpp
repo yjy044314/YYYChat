@@ -213,7 +213,20 @@ void CMFCChatServerDlg::OnBnClickedStartBtn()
 	m_list.AddString(str);
 	UpdateData(FALSE);
 }
-
+//消息拼接
+CString CMFCChatServerDlg::CatShowString(CString strInfo, CString strMsg)
+{
+	//时间+信息（昵称）+消息
+	CString strTime;
+	CTime tmNow;
+	tmNow = CTime::GetCurrentTime();
+	strTime = tmNow.Format("%X ");
+	CString strShow;
+	strShow = strTime + strShow;
+	strShow += strInfo;
+	strShow += strMsg;
+	return strShow;
+}
 
 void CMFCChatServerDlg::OnBnClickedSendBtn()
 {
@@ -228,11 +241,12 @@ void CMFCChatServerDlg::OnBnClickedSendBtn()
 
 	//3.显示到列表框
 	CString strShow = _T("服务端: ");
-	CString strTime;
-	m_tm = CTime::GetCurrentTime();
-	strTime = m_tm.Format("%X ");
-	strShow = strTime + strShow;
-	strShow += strTmpMsg;
+	strShow = CatShowString(strShow, strTmpMsg);
+// 	CString strTime;
+// 	m_tm = CTime::GetCurrentTime();
+// 	strTime = m_tm.Format("%X ");
+// 	strShow = strTime + strShow;
+// 	strShow += strTmpMsg;
 	m_list.AddString(strShow);
 	UpdateData(FALSE);
 	//清空编辑框
