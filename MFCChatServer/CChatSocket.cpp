@@ -18,14 +18,15 @@ void CChatSocket::OnReceive(int nErrorCode)
 	TRACE("####CChatSocket::OnReceive(int nErrorCode) ");
 	CMFCChatServerDlg* dlg =(CMFCChatServerDlg *) AfxGetApp()->GetMainWnd();
 	//1.接收数据
-	char szRecvBuf[200] = { 0 };
-	Receive(szRecvBuf, 200, 0);
+	char szRecvBuf[MAX_SERVER_BUF] = { 0 };
+	Receive(szRecvBuf, MAX_SERVER_BUF, 0);
 	TRACE("#####server Receive szRecvBuf %s", szRecvBuf);
 	//2.显示 到列表框
 	USES_CONVERSION;
 	CString strRecvMsg = A2W(szRecvBuf);
-	CString strShow = _T("客户端: ");
-	strShow = dlg->CatShowString(strShow, strRecvMsg);
+
+	CString strInfo = _T("");
+	CString strShow = dlg->CatShowString(strInfo, strRecvMsg);
 // 	CString strTime;
 // 	dlg->m_tm = CTime::GetCurrentTime();
 // 	strTime = dlg->m_tm.Format("%X ");

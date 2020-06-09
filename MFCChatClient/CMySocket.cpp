@@ -31,8 +31,8 @@ void CMySocket::OnReceive(int nErrorCode)
 	TRACE("####CMySocket::OnReceive(int nErrorCode) ");
 	CMFCChatClientDlg* dlg = (CMFCChatClientDlg*)AfxGetApp()->GetMainWnd();
 	//1.接收数据
-	char szRecvBuf[200] = { 0 };
-	Receive(szRecvBuf, 200, 0);
+	char szRecvBuf[MAX_SEND_BUF] = { 0 };
+	Receive(szRecvBuf, MAX_SEND_BUF, 0);
 	TRACE("#####client Receive szRecvBuf %s", szRecvBuf);
 	//2.显示 到列表框
 	USES_CONVERSION;

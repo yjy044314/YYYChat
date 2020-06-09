@@ -237,7 +237,7 @@ void CMFCChatServerDlg::OnBnClickedSendBtn()
 	USES_CONVERSION;
 	char* szSendBuf = T2A(strTmpMsg);
 	//2.发送到服务端
-	m_chat->Send(szSendBuf, 200, 0);
+	m_chat->Send(szSendBuf, MAX_SERVER_BUF, 0);
 
 	//3.显示到列表框
 	CString strShow = _T("服务端: ");
