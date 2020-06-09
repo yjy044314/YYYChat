@@ -72,6 +72,7 @@ BEGIN_MESSAGE_MAP(CMFCChatServerDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_SEND_EDIT, &CMFCChatServerDlg::OnEnChangeSendEdit)
 	ON_BN_CLICKED(IDC_START_BTN, &CMFCChatServerDlg::OnBnClickedStartBtn)
 	ON_BN_CLICKED(IDC_SEND_BTN, &CMFCChatServerDlg::OnBnClickedSendBtn)
+	ON_BN_CLICKED(IDC_CLEAR_BTN, &CMFCChatServerDlg::OnBnClickedClearBtn)
 END_MESSAGE_MAP()
 
 
@@ -251,4 +252,10 @@ void CMFCChatServerDlg::OnBnClickedSendBtn()
 	UpdateData(FALSE);
 	//清空编辑框
 	GetDlgItem(IDC_SEND_EDIT)->SetWindowTextW(_T(""));
+}
+
+
+void CMFCChatServerDlg::OnBnClickedClearBtn()
+{
+	m_list.ResetContent();
 }

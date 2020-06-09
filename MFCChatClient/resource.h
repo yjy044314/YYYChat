@@ -20,7 +20,6 @@
 #define IDC_IPADDRESS                   1010
 #define IDC_SAVENAME_BTN                1011
 #define IDC_NAME_EDIT                   1012
-#define IDC_SAVENAME1_BTN               1013
 
 // Next default values for new objects
 // 

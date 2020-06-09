@@ -44,4 +44,5 @@ public:
 
 	afx_msg void OnBnClickedSendBtn();
 	CString CMFCChatServerDlg::CatShowString(CString strInfo, CString strMsg);
+	afx_msg void OnBnClickedClearBtn();
 };

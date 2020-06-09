@@ -74,6 +74,8 @@ BEGIN_MESSAGE_MAP(CMFCChatClientDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_SEND_BTN, &CMFCChatClientDlg::OnBnClickedSendBtn)
 	ON_BN_CLICKED(IDC_SAVENAME_BTN, &CMFCChatClientDlg::OnBnClickedSavenameBtn)
 	
+	ON_BN_CLICKED(IDC_AUTOSEND_RADIO1, &CMFCChatClientDlg::OnBnClickedAutosendRadio1)
+	ON_BN_CLICKED(IDC_CLEAR_BTN, &CMFCChatClientDlg::OnBnClickedClearBtn)
 END_MESSAGE_MAP()
 
 
@@ -311,4 +313,23 @@ void CMFCChatClientDlg::OnBnClickedSendBtn()
  }
 
 
+ void CMFCChatClientDlg::OnBnClickedAutosendRadio1()
+ {
+	 if (((CButton*)GetDlgItem(IDC_AUTOSEND_RADIO1))
+		 ->GetCheck()) 
+	 {
+		 ((CButton*)GetDlgItem(IDC_AUTOSEND_RADIO1))
+			 ->SetCheck(FALSE);
+	 }
+	 else
+	 {
+		 ((CButton*)GetDlgItem(IDC_AUTOSEND_RADIO1))
+			 ->SetCheck(TRUE);
+	 }
+ }
 
+
+ void CMFCChatClientDlg::OnBnClickedClearBtn()
+ {
+	 m_list.ResetContent();
+ }

@@ -43,4 +43,6 @@ public:
 	afx_msg void OnBnClickedSendBtn();
 	CString CatShowString(CString strInfo, CString strMsg);
 	afx_msg void OnBnClickedSavenameBtn();
+	afx_msg void OnBnClickedAutosendRadio1();
+	afx_msg void OnBnClickedClearBtn();
 };
