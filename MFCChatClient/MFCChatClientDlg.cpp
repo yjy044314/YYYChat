@@ -74,8 +74,9 @@ BEGIN_MESSAGE_MAP(CMFCChatClientDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_SEND_BTN, &CMFCChatClientDlg::OnBnClickedSendBtn)
 	ON_BN_CLICKED(IDC_SAVENAME_BTN, &CMFCChatClientDlg::OnBnClickedSavenameBtn)
 	
-	ON_BN_CLICKED(IDC_AUTOSEND_RADIO1, &CMFCChatClientDlg::OnBnClickedAutosendRadio1)
+	//ON_BN_CLICKED(IDC_AUTOSEND_RADIO1, &CMFCChatClientDlg::OnBnClickedAutosendRadio1)
 	ON_BN_CLICKED(IDC_CLEAR_BTN, &CMFCChatClientDlg::OnBnClickedClearBtn)
+	ON_BN_CLICKED(IDC_AUTOSEND_CHECK, &CMFCChatClientDlg::OnBnClickedAutosendCheck)
 END_MESSAGE_MAP()
 
 
@@ -135,6 +136,11 @@ BOOL CMFCChatClientDlg::OnInitDialog()
 		UpdateData(FALSE);
 	}
 	
+	//初始化控件
+	GetDlgItem(IDC_SEND_BTN)->EnableWindow(FALSE);
+	GetDlgItem(IDC_DISCONNECT_BTN)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CONNECT_BTN)->EnableWindow(TRUE);
+	GetDlgItem(IDC_AUTOSEND_CHECK)->EnableWindow(FALSE);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -191,6 +197,11 @@ HCURSOR CMFCChatClientDlg::OnQueryDragIcon()
 
 void CMFCChatClientDlg::OnBnClickedConnectBtn()
 {
+	GetDlgItem(IDC_SEND_BTN)->EnableWindow(TRUE);
+	GetDlgItem(IDC_DISCONNECT_BTN)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CONNECT_BTN)->EnableWindow(FALSE);
+	GetDlgItem(IDC_AUTOSEND_CHECK)->EnableWindow(TRUE);
+
 	//取得IP跟端口
 	TRACE("####OnBnClickedConnectBtn");
 	CString strPort, strIP;
@@ -232,7 +243,24 @@ void CMFCChatClientDlg::OnBnClickedConnectBtn()
 
 void CMFCChatClientDlg::OnBnClickedDisconnectBtn()
 {
-	// TODO: 在此添加控件通知处理程序代码
+	//控件恢复状态
+	GetDlgItem(IDC_SEND_BTN)->EnableWindow(FALSE);
+	GetDlgItem(IDC_DISCONNECT_BTN)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CONNECT_BTN)->EnableWindow(TRUE);
+	GetDlgItem(IDC_AUTOSEND_CHECK)->EnableWindow(FALSE);
+
+	//回收资源
+	m_client->Close();
+	if (m_client != NULL) {
+		delete m_client;
+		m_client = NULL;
+	}
+
+	//显示到列表框
+	CString strShow = CatShowString(_T(""), _T("断开与服务器的连接！"));
+	m_list.AddString(strShow);
+	UpdateData(FALSE);
+
 }
 
 //消息的拼接
@@ -313,23 +341,25 @@ void CMFCChatClientDlg::OnBnClickedSendBtn()
  }
 
 
- void CMFCChatClientDlg::OnBnClickedAutosendRadio1()
- {
-	 if (((CButton*)GetDlgItem(IDC_AUTOSEND_RADIO1))
-		 ->GetCheck()) 
-	 {
-		 ((CButton*)GetDlgItem(IDC_AUTOSEND_RADIO1))
-			 ->SetCheck(FALSE);
-	 }
-	 else
-	 {
-		 ((CButton*)GetDlgItem(IDC_AUTOSEND_RADIO1))
-			 ->SetCheck(TRUE);
-	 }
- }
 
 
  void CMFCChatClientDlg::OnBnClickedClearBtn()
  {
 	 m_list.ResetContent();
+ }
+
+
+ void CMFCChatClientDlg::OnBnClickedAutosendCheck()
+ {
+	 if (((CButton*)GetDlgItem(IDC_AUTOSEND_CHECK))
+		 ->GetCheck())
+	 {
+		 ((CButton*)GetDlgItem(IDC_AUTOSEND_CHECK))
+			 ->SetCheck(FALSE);
+	 }
+	 else
+	 {
+		 ((CButton*)GetDlgItem(IDC_AUTOSEND_CHECK))
+			 ->SetCheck(TRUE);
+	 }
  }

@@ -45,4 +45,5 @@ public:
 	afx_msg void OnBnClickedSavenameBtn();
 	afx_msg void OnBnClickedAutosendRadio1();
 	afx_msg void OnBnClickedClearBtn();
+	afx_msg void OnBnClickedAutosendCheck();
 };

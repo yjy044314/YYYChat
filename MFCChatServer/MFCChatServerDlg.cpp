@@ -73,6 +73,7 @@ BEGIN_MESSAGE_MAP(CMFCChatServerDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_START_BTN, &CMFCChatServerDlg::OnBnClickedStartBtn)
 	ON_BN_CLICKED(IDC_SEND_BTN, &CMFCChatServerDlg::OnBnClickedSendBtn)
 	ON_BN_CLICKED(IDC_CLEAR_BTN, &CMFCChatServerDlg::OnBnClickedClearBtn)
+	ON_BN_CLICKED(IDC_STOP_BTN, &CMFCChatServerDlg::OnBnClickedStopBtn)
 END_MESSAGE_MAP()
 
 
@@ -109,6 +110,11 @@ BOOL CMFCChatServerDlg::OnInitDialog()
 
 	// TODO: 在此添加额外的初始化代码
 	GetDlgItem(IDC_PORT_EDIT)->SetWindowText(_T("6000"));
+
+	GetDlgItem(IDC_START_BTN)->EnableWindow(TRUE);
+	GetDlgItem(IDC_STOP_BTN)->EnableWindow(FALSE);
+	GetDlgItem(IDC_SEND_BTN)->EnableWindow(FALSE);
+	
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -179,6 +185,11 @@ void CMFCChatServerDlg::OnEnChangeSendEdit()
 void CMFCChatServerDlg::OnBnClickedStartBtn()
 {
 	TRACE("###OnBnClickedStartBtn");
+
+	GetDlgItem(IDC_START_BTN)->EnableWindow(FALSE);
+	GetDlgItem(IDC_STOP_BTN)->EnableWindow(TRUE);
+	GetDlgItem(IDC_SEND_BTN)->EnableWindow(TRUE);
+
 	CString strPort, strIP;
 	//从控件中获取内容
 	GetDlgItem(IDC_PORT_EDIT)->GetWindowText(strPort);
@@ -258,4 +269,28 @@ void CMFCChatServerDlg::OnBnClickedSendBtn()
 void CMFCChatServerDlg::OnBnClickedClearBtn()
 {
 	m_list.ResetContent();
+}
+
+
+void CMFCChatServerDlg::OnBnClickedStopBtn()
+{
+	//控件控制
+	GetDlgItem(IDC_START_BTN)->EnableWindow(TRUE);
+	GetDlgItem(IDC_STOP_BTN)->EnableWindow(FALSE);
+	GetDlgItem(IDC_SEND_BTN)->EnableWindow(FALSE);
+
+	//回收资源
+
+	m_server->Close();
+	if (m_server != NULL) {
+		delete m_server;
+		m_server = NULL;
+
+	}
+	m_chat->Close();
+	if (m_chat != NULL) {
+		delete m_chat;
+		m_chat = NULL;
+
+	}
 }

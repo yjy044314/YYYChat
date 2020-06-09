@@ -10,6 +10,8 @@ CMySocket::~CMySocket()
 
 }
 
+//ALT+G
+//alt+shift+F
 void CMySocket::OnConnect(int nErrorCode)
 {
 	TRACE("####OnConnect");
@@ -46,7 +48,7 @@ void CMySocket::OnReceive(int nErrorCode)
 // 	strShow = strTime + strShow;
 // 	strShow += strRecvMsg;
 	dlg->m_list.AddString(strShow);
-	if (((CButton*)dlg->GetDlgItem(IDC_AUTOSEND_RADIO1))
+	if (((CButton*)dlg->GetDlgItem(IDC_AUTOSEND_CHECK))
 		->GetCheck())
 	{
 		//自动回复,读取编辑框内容
@@ -64,7 +66,7 @@ void CMySocket::OnReceive(int nErrorCode)
 		dlg->m_list.AddString(strShow);
 		dlg->UpdateData(FALSE);
 	}
-
+	//alt+shift +F
 	//选中单选按钮
 	dlg->UpdateData(FALSE);
 
