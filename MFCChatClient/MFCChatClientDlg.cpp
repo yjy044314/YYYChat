@@ -63,6 +63,7 @@ void CMFCChatClientDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST1, m_list);
 	DDX_Control(pDX, IDC_SEND_EDIT, m_input);
+	DDX_Control(pDX, IDC_COLOUR_COMBO, m_WordColorCombo);
 }
 
 BEGIN_MESSAGE_MAP(CMFCChatClientDlg, CDialogEx)
@@ -77,6 +78,7 @@ BEGIN_MESSAGE_MAP(CMFCChatClientDlg, CDialogEx)
 	//ON_BN_CLICKED(IDC_AUTOSEND_RADIO1, &CMFCChatClientDlg::OnBnClickedAutosendRadio1)
 	ON_BN_CLICKED(IDC_CLEAR_BTN, &CMFCChatClientDlg::OnBnClickedClearBtn)
 	ON_BN_CLICKED(IDC_AUTOSEND_CHECK, &CMFCChatClientDlg::OnBnClickedAutosendCheck)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 
@@ -141,6 +143,14 @@ BOOL CMFCChatClientDlg::OnInitDialog()
 	GetDlgItem(IDC_DISCONNECT_BTN)->EnableWindow(FALSE);
 	GetDlgItem(IDC_CONNECT_BTN)->EnableWindow(TRUE);
 	GetDlgItem(IDC_AUTOSEND_CHECK)->EnableWindow(FALSE);
+	//初始化颜色选择变量的初始显示
+	m_WordColorCombo.AddString(_T("黑色"));
+	m_WordColorCombo.AddString(_T("红色"));
+	m_WordColorCombo.AddString(_T("蓝色"));
+	m_WordColorCombo.AddString(_T("绿色"));
+
+	m_WordColorCombo.SetCurSel(0);//设置当前 选择
+	SetDlgItemText(IDC_COLOUR_COMBO, _T("黑色"));
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -273,9 +283,9 @@ CString CMFCChatClientDlg::CatShowString(CString strInfo, CString strMsg)
 	strTime = tmNow.Format("%X ");
 	CString strShow;
 	strShow = strTime + strShow;
-	strShow += strInfo;
-	strShow += strMsg;
-	return strShow;
+strShow += strInfo;
+strShow += strMsg;
+return strShow;
 }
 
 void CMFCChatClientDlg::OnBnClickedSendBtn()
@@ -294,17 +304,17 @@ void CMFCChatClientDlg::OnBnClickedSendBtn()
 
 	//3.显示到列表框
 	CString strShow;
-// 	CString strName;
-// 	GetDlgItem(IDC_NAME_EDIT)->GetWindowTextW(strName);
-// 	strName += _T(": ");
-	CString strInfo=_T("");
+	// 	CString strName;
+	// 	GetDlgItem(IDC_NAME_EDIT)->GetWindowTextW(strName);
+	// 	strName += _T(": ");
+	CString strInfo = _T("");
 	strShow = CatShowString(strInfo, strTmpMsg);
 
-// 	CString strTime;
-// 	m_tm = CTime::GetCurrentTime();
-// 	strTime = m_tm.Format("%X ");
-// 	strShow = strTime + strShow;
-// 	strShow += strTmpMsg;
+	// 	CString strTime;
+	// 	m_tm = CTime::GetCurrentTime();
+	// 	strTime = m_tm.Format("%X ");
+	// 	strShow = strTime + strShow;
+	// 	strShow += strTmpMsg;
 	m_list.AddString(strShow);
 	UpdateData(FALSE);
 	//清空编辑框
@@ -312,54 +322,117 @@ void CMFCChatClientDlg::OnBnClickedSendBtn()
 }
 
 
- void CMFCChatClientDlg::OnBnClickedSavenameBtn()
- {
-	 CString strName;
-	 GetDlgItemText(IDC_NAME_EDIT, strName);
-	 if(strName.GetLength() <= 0) 
-	 {
-		 MessageBox(_T("昵称不能为空！"));
-			 return;
+void CMFCChatClientDlg::OnBnClickedSavenameBtn()
+{
+	CString strName;
+	GetDlgItemText(IDC_NAME_EDIT, strName);
+	if (strName.GetLength() <= 0)
+	{
+		MessageBox(_T("昵称不能为空！"));
+		return;
+	}
+
+	if (IDOK == AfxMessageBox(_T("确定修改昵称吗？"), MB_OKCANCEL))
+	{
+		TRACE("####:OnBnClickedSavenameBtn()");
+		//保存昵称
+
+		WCHAR strPath[MAX_PATH] = { 0 };
+		//获取当前路径
+		GetCurrentDirectoryW(MAX_PATH, strPath);
+		CString strFilePath;
+		strFilePath.Format(L"%ls//Test.ini", strPath);
+		//两种方式获取编辑框内容
+		//GetDlgItem(IDC_NAME_EDIT)->GetWindowTextW(strName);
+		GetDlgItemText(IDC_NAME_EDIT, strName);
+		WritePrivateProfileStringW(_T("CLIENT"), _T("NAME"), strName, strFilePath);
+	}
+
+}
+
+
+
+
+void CMFCChatClientDlg::OnBnClickedClearBtn()
+{
+	m_list.ResetContent();
+}
+
+
+void CMFCChatClientDlg::OnBnClickedAutosendCheck()
+{
+	if (((CButton*)GetDlgItem(IDC_AUTOSEND_CHECK))
+		->GetCheck())
+	{
+		((CButton*)GetDlgItem(IDC_AUTOSEND_CHECK))
+			->SetCheck(FALSE);
+	}
+	else
+	{
+		((CButton*)GetDlgItem(IDC_AUTOSEND_CHECK))
+			->SetCheck(TRUE);
+	}
+}
+
+
+HBRUSH CMFCChatClientDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+	CString strColor;
+	m_WordColorCombo.GetWindowTextW(strColor);
+
+	if ((IDC_LIST1) == pWnd->GetDlgCtrlID() || IDC_SEND_EDIT == pWnd->GetDlgCtrlID())
+	{
+		if (strColor == L"黑色")
+		{
+			pDC->SetTextColor(RGB(0, 0, 0));
+		}
+		else if (strColor == L"红色")
+		{
+			pDC->SetTextColor(RGB(255, 0, 0));
+		}
+		else if (strColor == L"蓝色")
+		{
+			pDC->SetTextColor(RGB(0, 0, 255));
+		}
+		else if (strColor == L"绿色")
+		{
+			pDC->SetTextColor(RGB(0, 255, 255));
+		}
+	}
+
+	/*
+	if (strColor == L"黑色")
+	{
+		if ((IDC_LIST1) == pWnd->GetDlgCtrlID() || IDC_SEND_EDIT == pWnd->GetDlgCtrlID())
+		 {
+			pDC->SetTextColor(RGB(0, 0, 0));
+		}
 	 }
+	if (strColor == L"红色")
+	{
+		if ((IDC_LIST1) == pWnd->GetDlgCtrlID() || IDC_SEND_EDIT == pWnd->GetDlgCtrlID())
+		{
+			pDC->SetTextColor(RGB(255, 0, 0));
+		}
+	}
+	if (strColor == L"蓝色")
+	{
+		if ((IDC_LIST1) == pWnd->GetDlgCtrlID() || IDC_SEND_EDIT == pWnd->GetDlgCtrlID())
+		{
+			pDC->SetTextColor(RGB(0, 0, 255));
+		}
+	}
+	if (strColor == L"绿色")
+	{
+		if ((IDC_LIST1) == pWnd->GetDlgCtrlID() || IDC_SEND_EDIT == pWnd->GetDlgCtrlID())
+		{
+			pDC->SetTextColor(RGB(0, 255, 255));
+		}
+	}
+	*/
 
-	 if (IDOK == AfxMessageBox(_T("确定修改昵称吗？"), MB_OKCANCEL))
-	 {
-		 TRACE("####:OnBnClickedSavenameBtn()");
-		 //保存昵称
-		
-		 WCHAR strPath[MAX_PATH] = { 0 };
-		 //获取当前路径
-		 GetCurrentDirectoryW(MAX_PATH, strPath);
-		 CString strFilePath;
-		 strFilePath.Format(L"%ls//Test.ini", strPath);
-		 //两种方式获取编辑框内容
-		 //GetDlgItem(IDC_NAME_EDIT)->GetWindowTextW(strName);
-		 GetDlgItemText(IDC_NAME_EDIT, strName);
-		 WritePrivateProfileStringW(_T("CLIENT"), _T("NAME"), strName, strFilePath);
-	 }
- 	
- }
+	
 
-
-
-
- void CMFCChatClientDlg::OnBnClickedClearBtn()
- {
-	 m_list.ResetContent();
- }
-
-
- void CMFCChatClientDlg::OnBnClickedAutosendCheck()
- {
-	 if (((CButton*)GetDlgItem(IDC_AUTOSEND_CHECK))
-		 ->GetCheck())
-	 {
-		 ((CButton*)GetDlgItem(IDC_AUTOSEND_CHECK))
-			 ->SetCheck(FALSE);
-	 }
-	 else
-	 {
-		 ((CButton*)GetDlgItem(IDC_AUTOSEND_CHECK))
-			 ->SetCheck(TRUE);
-	 }
+	 return hbr;
  }

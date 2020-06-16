@@ -46,4 +46,6 @@ public:
 	afx_msg void OnBnClickedAutosendRadio1();
 	afx_msg void OnBnClickedClearBtn();
 	afx_msg void OnBnClickedAutosendCheck();
+	CComboBox m_WordColorCombo;
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };

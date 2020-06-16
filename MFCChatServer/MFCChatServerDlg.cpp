@@ -62,6 +62,7 @@ void CMFCChatServerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_MSG_LIST, m_list);
+	DDX_Control(pDX, IDC_COLOUR_COMBO, m_WordColorCombo);
 }
 
 BEGIN_MESSAGE_MAP(CMFCChatServerDlg, CDialogEx)
@@ -74,6 +75,7 @@ BEGIN_MESSAGE_MAP(CMFCChatServerDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_SEND_BTN, &CMFCChatServerDlg::OnBnClickedSendBtn)
 	ON_BN_CLICKED(IDC_CLEAR_BTN, &CMFCChatServerDlg::OnBnClickedClearBtn)
 	ON_BN_CLICKED(IDC_STOP_BTN, &CMFCChatServerDlg::OnBnClickedStopBtn)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 
@@ -115,6 +117,15 @@ BOOL CMFCChatServerDlg::OnInitDialog()
 	GetDlgItem(IDC_STOP_BTN)->EnableWindow(FALSE);
 	GetDlgItem(IDC_SEND_BTN)->EnableWindow(FALSE);
 	
+	//初始化颜色选择变量的初始显示
+	m_WordColorCombo.AddString(_T("黑色"));
+	m_WordColorCombo.AddString(_T("红色"));
+	m_WordColorCombo.AddString(_T("蓝色"));
+	m_WordColorCombo.AddString(_T("绿色"));
+
+	m_WordColorCombo.SetCurSel(0);//设置当前 选择
+	SetDlgItemText(IDC_COLOUR_COMBO, _T("黑色"));
+
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -287,10 +298,41 @@ void CMFCChatServerDlg::OnBnClickedStopBtn()
 		m_server = NULL;
 
 	}
-	m_chat->Close();
+	//有 create 才需要 closed
+	//m_chat->Close();
 	if (m_chat != NULL) {
 		delete m_chat;
 		m_chat = NULL;
 
 	}
+}
+
+
+HBRUSH CMFCChatServerDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+	CString strColor;
+	m_WordColorCombo.GetWindowTextW(strColor);
+
+	if ((IDC_MSG_LIST) == pWnd->GetDlgCtrlID() || IDC_SEND_EDIT == pWnd->GetDlgCtrlID())
+	{
+		if (strColor == L"黑色")
+		{
+			pDC->SetTextColor(RGB(0, 0, 0));
+		}
+		else if (strColor == L"红色")
+		{
+			pDC->SetTextColor(RGB(255, 0, 0));
+		}
+		else if (strColor == L"蓝色")
+		{
+			pDC->SetTextColor(RGB(0, 0, 255));
+		}
+		else if (strColor == L"绿色")
+		{
+			pDC->SetTextColor(RGB(0, 255, 255));
+		}
+	}
+	
+	return hbr;
 }

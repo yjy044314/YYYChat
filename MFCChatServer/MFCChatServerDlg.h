@@ -46,4 +46,6 @@ public:
 	CString CMFCChatServerDlg::CatShowString(CString strInfo, CString strMsg);
 	afx_msg void OnBnClickedClearBtn();
 	afx_msg void OnBnClickedStopBtn();
+	CComboBox m_WordColorCombo;
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };
