@@ -148,6 +148,7 @@ void CMFCChatServerDlg::OnSysCommand(UINT nID, LPARAM lParam)
 
 void CMFCChatServerDlg::OnPaint()
 {
+	TRACE("#####OnPaint");
 	if (IsIconic())
 	{
 		CPaintDC dc(this); // 用于绘制的设备上下文
@@ -167,6 +168,29 @@ void CMFCChatServerDlg::OnPaint()
 	}
 	else
 	{
+		//定义设备上下文
+		CPaintDC dc(this); // 用于绘制的设备上下文
+		//确定区域
+		CRect rect;
+		GetClientRect(&rect);
+		TRACE("width=%d,height=%d\n",rect.Width(),rect.Height());
+		//定义并创建内存设备环境，创建兼容性设备DC
+
+		CDC dcBmp;
+		dcBmp.CreateCompatibleDC(&dcBmp);
+		//载入资源图片
+		CBitmap bmpBackGround;
+		bmpBackGround.LoadBitmap(IDB_WD_BITMAP);
+		//将图片载入位图
+		BITMAP bBitmap;
+		bmpBackGround.GetBitmap(&bBitmap);
+		//将位图选入临时的内存设备环境
+		CBitmap* pbmpold = dcBmp.SelectObject(&bmpBackGround);
+		//绘制,将原图像复制到目标矩形区域
+
+		dc.StretchBlt(0, 0, rect.Width(), rect.Height(), &dcBmp, 0, 0,
+			bBitmap.bmWidth, bBitmap.bmHeight, SRCCOPY);
+
 		CDialogEx::OnPaint();
 	}
 }

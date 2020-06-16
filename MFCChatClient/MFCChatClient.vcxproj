@@ -210,6 +210,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\MFCChatClient.ico" />
+    <Image Include="res\w&amp;d.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
