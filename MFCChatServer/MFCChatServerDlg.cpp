@@ -76,6 +76,9 @@ BEGIN_MESSAGE_MAP(CMFCChatServerDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_CLEAR_BTN, &CMFCChatServerDlg::OnBnClickedClearBtn)
 	ON_BN_CLICKED(IDC_STOP_BTN, &CMFCChatServerDlg::OnBnClickedStopBtn)
 	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_CAL_BTN, &CMFCChatServerDlg::OnBnClickedCalBtn)
+	ON_BN_CLICKED(IDC_MAIL_BTN, &CMFCChatServerDlg::OnBnClickedMailBtn)
+	ON_BN_CLICKED(IDC_QQ_BTN, &CMFCChatServerDlg::OnBnClickedQqBtn)
 END_MESSAGE_MAP()
 
 
@@ -359,4 +362,23 @@ HBRUSH CMFCChatServerDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	}
 	
 	return hbr;
+}
+
+
+void CMFCChatServerDlg::OnBnClickedCalBtn()
+{
+	ShellExecute(NULL, L"open", L"calc.exe", NULL, NULL, SW_SHOWNORMAL);
+}
+
+
+void CMFCChatServerDlg::OnBnClickedMailBtn()
+{
+	ShellExecute(NULL, L"open", L"https://mail.qq.com", NULL, NULL, SW_SHOWNORMAL);
+}
+
+
+void CMFCChatServerDlg::OnBnClickedQqBtn()
+{
+	ShellExecute(NULL, L"open", L"C:\\Program Files (x86)\\Tencent\\QQ\\Bin\\QQScLauncher.exe", 
+		NULL, NULL, SW_SHOWNORMAL);
 }

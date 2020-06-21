@@ -48,4 +48,7 @@ public:
 	afx_msg void OnBnClickedStopBtn();
 	CComboBox m_WordColorCombo;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnBnClickedCalBtn();
+	afx_msg void OnBnClickedMailBtn();
+	afx_msg void OnBnClickedQqBtn();
 };

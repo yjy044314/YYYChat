@@ -192,6 +192,7 @@ void CMFCChatClientDlg::OnPaint()
 	}
 	else
 	{
+		
 		//定义设备上下文
 		CPaintDC dc(this); // 用于绘制的设备上下文
 		//确定区域
@@ -459,3 +460,33 @@ HBRUSH CMFCChatClientDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 	 return hbr;
  }
+
+
+BOOL CMFCChatClientDlg::PreTranslateMessage(MSG* pMsg)
+{
+	//规避回车键
+	//按下键盘，并且是某键
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
+	{
+		TRACE("回车");
+		return TRUE;
+	}
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_SPACE)
+	{
+		TRACE("空格键");
+		return TRUE;
+	}
+	if ((pMsg->message) == WM_KEYDOWN)
+	{
+		TRACE("######Ctrl 是否按下");
+		if (GetKeyState(VK_CONTROL) < 0)// Ctrl 是否按下
+		{
+			TRACE("######Ctrl +X 是否按下");
+			if (pMsg->wParam == 'X')    //Ctrl +X   是否按下
+			{
+				CDialogEx::OnOK();
+			}
+		}
+	}
+	return CDialogEx::PreTranslateMessage(pMsg);
+}
